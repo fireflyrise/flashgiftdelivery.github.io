@@ -129,16 +129,18 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
               <div>
                 <Label>Delivery Photo</Label>
-                {order.delivery_photo_url ? (
-                  <div className="mt-2">
+                {order.delivery_photo_url && (
+                  <div className="mt-2 mb-3">
                     <Image src={order.delivery_photo_url} alt="Delivery" width={300} height={200} className="rounded" />
                   </div>
-                ) : (
-                  <div className="mt-2">
-                    <Input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={uploading} />
-                    {uploading && <p className="text-sm text-muted-foreground mt-1">Uploading...</p>}
-                  </div>
                 )}
+                <div className="mt-2">
+                  <Input type="file" accept="image/*" onChange={handlePhotoUpload} disabled={uploading} />
+                  {uploading && <p className="text-sm text-muted-foreground mt-1">Uploading...</p>}
+                  {order.delivery_photo_url && (
+                    <p className="text-xs text-muted-foreground mt-1">Upload a new photo to replace the current one</p>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
