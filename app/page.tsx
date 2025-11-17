@@ -25,6 +25,8 @@ export default function LandingPage() {
   const [deliveryCities, setDeliveryCities] = useState<string[]>([]);
   const [storePhone, setStorePhone] = useState('(602) 829-0009');
   const [storeClosed, setStoreClosed] = useState(false);
+  const [closedMessage, setClosedMessage] = useState('');
+  const [closedUntil, setClosedUntil] = useState('');
   const [deliveryTime, setDeliveryTime] = useState('soon');
 
   useEffect(() => {
@@ -50,6 +52,12 @@ export default function LandingPage() {
         }
         if (data.is_closed !== undefined) {
           setStoreClosed(data.is_closed);
+        }
+        if (data.closed_message) {
+          setClosedMessage(data.closed_message);
+        }
+        if (data.closed_until) {
+          setClosedUntil(data.closed_until);
         }
       })
       .catch(err => console.error('Failed to load store settings:', err));
@@ -89,10 +97,19 @@ export default function LandingPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="font-semibold mb-2">📅 We'll Be Back:</p>
-                  <p className="text-sm">We're temporarily closed for maintenance. We'll reopen during our normal business hours.</p>
-                </div>
+                {closedMessage && (
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="font-semibold mb-2">📢 Message:</p>
+                    <p className="text-sm">{closedMessage}</p>
+                  </div>
+                )}
+
+                {closedUntil && (
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="font-semibold mb-2">📅 We'll Be Back:</p>
+                    <p className="text-sm">{new Date(closedUntil).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                  </div>
+                )}
 
                 <div className="bg-muted p-4 rounded-lg">
                   <p className="font-semibold mb-2">🕐 Normal Hours:</p>
