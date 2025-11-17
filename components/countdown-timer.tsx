@@ -80,18 +80,18 @@ export function CountdownTimer() {
     // Calculate earliest delivery time
     let earliestDelivery = "";
     if (currentHour >= 18) {
-      // 6 PM to midnight: Show tomorrow's first slot (8 AM + 2 hours = 10 AM)
-      earliestDelivery = "10:00 AM tomorrow";
+      // 6 PM to midnight: Show tomorrow's opening time (8 AM)
+      earliestDelivery = "8:00 AM tomorrow";
     } else {
-      // Midnight to noon: Show today's first slot (8 AM + 2 hours = 10 AM)
-      earliestDelivery = "10:00 AM today";
+      // Midnight to noon: Show today's opening time (8 AM)
+      earliestDelivery = "8:00 AM today";
     }
 
     return (
       <div className="bg-destructive text-destructive-foreground px-6 py-4 rounded-lg text-center">
         <p className="text-sm font-medium mb-1">⚠️ Limited Availability</p>
         <p className="text-3xl font-bold mb-1">Only {scarcity.slotsRemaining} Slots Left</p>
-        <p className="text-sm">2-hour delivery as early as {earliestDelivery} • {scarcity.percentFilled}% reserved</p>
+        <p className="text-sm">Delivery as early as {earliestDelivery} • {scarcity.percentFilled}% reserved</p>
       </div>
     );
   }
