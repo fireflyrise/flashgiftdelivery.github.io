@@ -82,18 +82,32 @@ export default function LandingPage() {
           />
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Store Temporarily Closed</CardTitle>
+              <CardTitle className="text-2xl">We're Currently Closed</CardTitle>
               <CardDescription className="text-base">
-                We're taking a short break. Please check back soon!
+                Thank you for your interest in Flash Gift Delivery!
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                For urgent inquiries, please call us at <a href={`tel:${storePhone.replace(/\D/g, '')}`} className="text-primary hover:underline font-semibold">{storePhone}</a>
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Normal hours: Monday - Sunday, 8:00 AM - 8:00 PM
-              </p>
+              <div className="space-y-4">
+                <div className="bg-muted p-4 rounded-lg">
+                  <p className="font-semibold mb-2">📅 We'll Be Back:</p>
+                  <p className="text-sm">We're temporarily closed for maintenance. We'll reopen during our normal business hours.</p>
+                </div>
+
+                <div className="bg-muted p-4 rounded-lg">
+                  <p className="font-semibold mb-2">🕐 Normal Hours:</p>
+                  <p className="text-sm">Monday - Sunday: 8:00 AM - 8:00 PM</p>
+                </div>
+
+                <div className="border-t pt-4">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    <strong>Need urgent help?</strong>
+                  </p>
+                  <p className="text-sm">
+                    Call us at <a href={`tel:${storePhone.replace(/\D/g, '')}`} className="text-primary hover:underline font-bold text-lg">{storePhone}</a>
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
