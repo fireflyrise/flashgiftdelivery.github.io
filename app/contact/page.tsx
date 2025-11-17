@@ -16,6 +16,7 @@ export default function ContactPage() {
     email: '',
     orderNumber: '',
     message: '',
+    website: '', // Honeypot field
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -125,6 +126,19 @@ export default function ContactPage() {
                     value={formData.orderNumber}
                     onChange={(e) => updateField('orderNumber', e.target.value.toUpperCase())}
                     placeholder="FGD20251112XXXX"
+                  />
+                </div>
+
+                {/* Honeypot field - hidden from humans, visible to bots */}
+                <div className="hidden" aria-hidden="true">
+                  <Label htmlFor="website">Website</Label>
+                  <Input
+                    id="website"
+                    name="website"
+                    value={formData.website}
+                    onChange={(e) => updateField('website', e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
                   />
                 </div>
 
