@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send to Pabbly webhook
-    const pabblyWebhookUrl = process.env.PABBLY_CONTACT_WEBHOOK_URL;
+    const pabblyWebhookUrl = process.env.PABBLY_NEW_MESSAGE_WEBHOOK_URL;
 
     if (pabblyWebhookUrl) {
       await fetch(pabblyWebhookUrl, {
