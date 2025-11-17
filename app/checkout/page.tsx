@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { GuaranteeBadge } from '@/components/guarantee-badge';
 import { AddressAutocomplete } from '@/components/address-autocomplete';
 import { PACKAGES, CARD_OCCASIONS, CHOCOLATES_PRICE } from '@/lib/constants';
-import { getAvailableTimeSlots } from '@/lib/utils-time';
+import { getAvailableTimeSlots, formatDeliveryTimeSlot } from '@/lib/utils-time';
 import { calculateOrderTotal, formatPrice } from '@/lib/utils-pricing';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -541,7 +541,7 @@ export default function CheckoutPage() {
                 {formData.deliveryTimeSlot && (
                   <div className="text-sm">
                     <div className="font-semibold">Delivery:</div>
-                    <div className="text-muted-foreground">{formData.deliveryTimeSlot}</div>
+                    <div className="text-muted-foreground">{formatDeliveryTimeSlot(formData.deliveryTimeSlot)}</div>
                   </div>
                 )}
 
