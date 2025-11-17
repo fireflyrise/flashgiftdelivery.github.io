@@ -1,5 +1,5 @@
 // Order bump - Premium Chocolates
-export const CHOCOLATES_PRICE = 1; // TEMP: Testing - Original: 99
+export const CHOCOLATES_PRICE = 99;
 
 // Package configuration
 export const PACKAGES = [
@@ -7,7 +7,7 @@ export const PACKAGES = [
     id: '1_dozen' as const,
     name: '1 Dozen Red Roses',
     roses: 12,
-    price: 1, // TEMP: Testing - Original: 299
+    price: 299,
     description: 'Perfect for a sweet gesture',
     image: '/1-dozen-roses.jpg',
   },
