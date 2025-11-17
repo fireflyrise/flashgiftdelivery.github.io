@@ -1,6 +1,6 @@
 export function GuaranteeBadge() {
   return (
-    <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-300 text-black px-6 py-3 rounded-full shadow-xl border-4 border-yellow-500/50 animate-pulse-slow">
+    <div className="inline-flex items-center gap-3 bg-yellow-200 text-black px-6 py-3 rounded-full shadow-xl border-4 border-yellow-400">
       <svg
         className="w-7 h-7 drop-shadow-md"
         fill="currentColor"
