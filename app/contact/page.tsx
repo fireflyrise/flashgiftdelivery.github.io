@@ -32,9 +32,16 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      // In a real implementation, you would send this to an API endpoint
-      // For now, we'll just simulate a submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit');
+      }
+
       setSubmitted(true);
     } catch (error) {
       alert('Failed to send message. Please try calling us instead.');
