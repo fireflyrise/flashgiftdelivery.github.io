@@ -15,11 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Flash Gift Delivery - Premium Roses Delivered in 2 Hours",
   description: "Premium roses delivered in 2 hours or less. Turn disaster into hero in one order. Same-day flower delivery with handwritten cards.",
-  icons: {
-    icon: '/emoticon.png',
-    shortcut: '/emoticon.png',
-    apple: '/emoticon.png',
-  },
 };
 
 export default function RootLayout({
