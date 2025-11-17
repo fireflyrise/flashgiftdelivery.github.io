@@ -225,7 +225,7 @@ export default function CheckoutPage() {
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <Image src="/logo.jpg" alt="Flash Gift Delivery" width={150} height={60} className="mx-auto mb-4" />
+          <Image src="/logo.png" alt="Flash Gift Delivery" width={150} height={60} className="mx-auto mb-4" />
           <h1 className="text-3xl font-bold mb-2">Secure Checkout</h1>
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span className={step >= 1 ? 'text-primary font-semibold' : ''}>1. Delivery Details</span>

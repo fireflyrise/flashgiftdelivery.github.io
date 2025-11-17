@@ -89,7 +89,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             <Link href="/admin/orders">
               <Button variant="outline" size="sm">← Back</Button>
             </Link>
-            <Image src="/logo.jpg" alt="Flash Gift Delivery" width={100} height={40} />
+            <Image src="/logo.png" alt="Flash Gift Delivery" width={100} height={40} />
             <h1 className="text-xl font-bold">Order #{order.order_number}</h1>
           </div>
         </div>

@@ -76,7 +76,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <Link href="/">
-          <Image src="/logo.jpg" alt="Flash Gift Delivery" width={150} height={60} className="mb-8" />
+          <Image src="/logo.png" alt="Flash Gift Delivery" width={150} height={60} className="mb-8" />
         </Link>
 
         <div className="grid md:grid-cols-2 gap-8">

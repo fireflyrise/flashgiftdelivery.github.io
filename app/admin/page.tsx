@@ -46,7 +46,7 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Flash Gift Delivery"
             width={150}
             height={60}

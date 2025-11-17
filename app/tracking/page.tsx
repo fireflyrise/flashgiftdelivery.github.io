@@ -62,7 +62,7 @@ function TrackingPageContent() {
         {/* Header */}
         <div className="text-center mb-8">
           <Link href="/">
-            <Image src="/logo.jpg" alt="Flash Gift Delivery" width={150} height={60} className="mx-auto mb-4" />
+            <Image src="/logo.png" alt="Flash Gift Delivery" width={150} height={60} className="mx-auto mb-4" />
           </Link>
           <h1 className="text-3xl font-bold mb-2">Track Your Order</h1>
           <p className="text-muted-foreground">Enter your order number to see real-time status updates</p>

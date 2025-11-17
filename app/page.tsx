@@ -339,7 +339,7 @@ export default function LandingPage() {
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
                 <Image
-                  src="/logo.jpg"
+                  src="/logo.png"
                   alt="Flash Gift Delivery"
                   width={150}
                   height={60}

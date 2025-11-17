@@ -97,7 +97,7 @@ export default function AdminSettingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link href="/">
-                <Image src="/logo.jpg" alt="Flash Gift Delivery" width={120} height={48} />
+                <Image src="/logo.png" alt="Flash Gift Delivery" width={120} height={48} />
               </Link>
               <h1 className="text-2xl font-bold">Settings</h1>
             </div>
