@@ -9,6 +9,7 @@ export const PACKAGES = [
     roses: 12,
     price: 299,
     description: 'Perfect for a sweet gesture',
+    image: '/1-dozen-roses.jpg',
   },
   {
     id: '2_dozen' as const,
@@ -17,6 +18,7 @@ export const PACKAGES = [
     price: 429,
     description: 'Our most popular choice',
     featured: true,
+    image: '/2-dozen-roses.jpg',
   },
   {
     id: '3_dozen' as const,
@@ -24,6 +26,7 @@ export const PACKAGES = [
     roses: 36,
     price: 649,
     description: 'The ultimate grand gesture',
+    image: '/3-dozen-roses.jpg',
   },
 ];
 

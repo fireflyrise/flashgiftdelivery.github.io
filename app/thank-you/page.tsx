@@ -147,7 +147,7 @@ function ThankYouPageContent() {
             <div>
               <h3 className="font-semibold mb-2">Package</h3>
               <div className="flex gap-3">
-                <Image src="/roses.jpg" alt="Roses" width={80} height={80} className="rounded" />
+                <Image src={`/${order.package_type}-roses.jpg`} alt="Roses" width={80} height={80} className="rounded" />
                 <div>
                   <div className="font-medium">{order.package_type.replace('_', ' ')} Premium Red Roses</div>
                   <div className="text-sm text-muted-foreground">Includes premium vase and handwritten card</div>

@@ -183,7 +183,7 @@ export default function LandingPage() {
                   <CardHeader className="text-center">
                     <div className="mb-4">
                       <Image
-                        src="/roses.jpg"
+                        src={pkg.image}
                         alt={pkg.name}
                         width={300}
                         height={200}

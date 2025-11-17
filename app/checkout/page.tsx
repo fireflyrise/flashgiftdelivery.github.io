@@ -523,7 +523,7 @@ export default function CheckoutPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex gap-3">
-                  <Image src="/roses.jpg" alt={selectedPackage.name} width={80} height={80} className="rounded" />
+                  <Image src={selectedPackage.image} alt={selectedPackage.name} width={80} height={80} className="rounded" />
                   <div>
                     <div className="font-semibold">{selectedPackage.name}</div>
                     <div className="text-sm text-muted-foreground">{selectedPackage.roses} premium roses</div>
