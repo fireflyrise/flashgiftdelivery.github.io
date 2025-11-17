@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Order } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils-pricing';
+import { formatDeliveryTimeSlot } from '@/lib/utils-time';
 
 function AdminOrdersContent() {
   const router = useRouter();
@@ -17,6 +18,8 @@ function AdminOrdersContent() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 10;
 
   useEffect(() => {
     fetchOrders();
@@ -39,6 +42,17 @@ function AdminOrdersContent() {
     await fetch('/api/admin/logout', { method: 'POST' });
     router.push('/admin');
   };
+
+  // Pagination calculations
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
+  const startIndex = (currentPage - 1) * ordersPerPage;
+  const endIndex = startIndex + ordersPerPage;
+  const currentOrders = orders.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -118,8 +132,9 @@ function AdminOrdersContent() {
                 <p className="text-muted-foreground">No orders found</p>
               </div>
             ) : (
+              <>
               <div className="space-y-2">
-                {orders.map((order) => (
+                {currentOrders.map((order) => (
                   <div
                     key={order.id}
                     className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer"
@@ -141,7 +156,7 @@ function AdminOrdersContent() {
                         <div className="text-xs text-muted-foreground">{formatPrice(order.total)}</div>
                       </div>
                       <div>
-                        <div className="text-sm">{order.delivery_time_slot}</div>
+                        <div className="text-sm">{formatDeliveryTimeSlot(order.delivery_time_slot)}</div>
                         <div className="text-xs text-muted-foreground">
                           {order.payment_status === 'paid' ? '✓ Paid' : 'Pending'}
                         </div>
@@ -161,6 +176,44 @@ function AdminOrdersContent() {
                   </div>
                 ))}
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-6 pt-4 border-t">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </Button>
+
+                  <div className="flex gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                        className="w-10"
+                      >
+                        {page}
+                      </Button>
+                    ))}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </Button>
+                </div>
+              )}
+              </>
             )}
           </CardContent>
         </Card>
