@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
           order.payment_status = 'paid';
 
           // Send to Pabbly if not already sent
-          if (!order.pabbly_notified && process.env.PABBLY_WEBHOOK_URL) {
+          if (!order.pabbly_notified && process.env.PABBLY_NEW_ORDER_WEBHOOK_URL) {
             try {
               // Generate PDF receipt
               let receiptPdfUrl = '';
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
                 console.error('Failed to generate PDF receipt:', pdfError);
               }
 
-              await fetch(process.env.PABBLY_WEBHOOK_URL, {
+              await fetch(process.env.PABBLY_NEW_ORDER_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

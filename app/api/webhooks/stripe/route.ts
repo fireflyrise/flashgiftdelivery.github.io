@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Send webhook to Pabbly (if configured)
-      if (process.env.PABBLY_WEBHOOK_URL) {
+      if (process.env.PABBLY_NEW_ORDER_WEBHOOK_URL) {
         try {
           const { data: order } = await supabaseAdmin
             .from('orders')
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
               // Continue anyway - don't fail the whole webhook if PDF fails
             }
 
-            await fetch(process.env.PABBLY_WEBHOOK_URL, {
+            await fetch(process.env.PABBLY_NEW_ORDER_WEBHOOK_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
