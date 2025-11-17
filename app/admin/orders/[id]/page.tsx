@@ -64,14 +64,22 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     formData.append('orderId', id);
 
     try {
-      await fetch('/api/admin/upload-delivery-photo', {
+      const response = await fetch('/api/admin/upload-delivery-photo', {
         method: 'POST',
         body: formData,
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Upload failed');
+      }
+
       alert('Photo uploaded successfully');
       fetchOrder();
     } catch (error) {
-      alert('Failed to upload photo');
+      console.error('Photo upload error:', error);
+      alert(`Failed to upload photo: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setUploading(false);
     }
