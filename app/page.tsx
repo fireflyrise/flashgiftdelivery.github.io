@@ -95,7 +95,7 @@ export default function LandingPage() {
 
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="luxury-gradient text-primary-foreground py-20 md:py-28">
+        <section className="luxury-gradient text-foreground py-20 md:py-28">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
@@ -321,7 +321,7 @@ export default function LandingPage() {
         <FAQSection />
 
         {/* Final CTA */}
-        <section className="py-16 luxury-gradient text-primary-foreground">
+        <section className="py-16 luxury-gradient text-foreground">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Don't Wait Until It's Too Late
