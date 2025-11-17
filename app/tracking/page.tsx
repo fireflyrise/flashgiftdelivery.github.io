@@ -173,13 +173,13 @@ function TrackingPageContent() {
                     Delivered on {new Date(order.delivered_at!).toLocaleString()}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex justify-center">
                   <Image
                     src={order.delivery_photo_url}
                     alt="Delivery proof"
                     width={600}
                     height={400}
-                    className="rounded-lg w-full"
+                    className="rounded-lg max-w-xl w-full"
                   />
                 </CardContent>
               </Card>
