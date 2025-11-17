@@ -196,34 +196,9 @@ export default function LandingPage() {
                 Delivering to: <span className="font-semibold text-foreground">{deliveryCities.join(' • ')}</span>
               </p>
 
-              {/* Scroll indicator arrows */}
-              <div className="mt-8 flex justify-center gap-6 animate-bounce">
-                {/* Column 1 */}
-                <div className="flex flex-col gap-2">
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                </div>
-
-                {/* Column 2 */}
-                <div className="flex flex-col gap-2">
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                </div>
-
-                {/* Column 3 */}
-                <div className="flex flex-col gap-2">
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                  <i className="fas fa-circle-chevron-down text-4xl text-primary"></i>
-                </div>
+              {/* Scroll indicator */}
+              <div className="mt-12 flex justify-center animate-pulse">
+                <i className="fas fa-chevron-down text-6xl text-primary opacity-70"></i>
               </div>
             </div>
           </div>
