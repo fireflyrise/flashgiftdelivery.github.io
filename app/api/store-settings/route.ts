@@ -19,18 +19,24 @@ export async function GET() {
       return NextResponse.json({
         phone_number: '(555) 123-4567',
         is_closed: false,
+        closed_message: '',
+        closed_until: '',
       });
     }
 
     return NextResponse.json({
       phone_number: data?.phone_number || '(555) 123-4567',
       is_closed: data?.is_closed || false,
+      closed_message: data?.closed_message || '',
+      closed_until: data?.closed_until || '',
     });
   } catch (error) {
     console.error('Failed to fetch store settings:', error);
     return NextResponse.json({
       phone_number: '(555) 123-4567',
       is_closed: false,
+      closed_message: '',
+      closed_until: '',
     });
   }
 }
