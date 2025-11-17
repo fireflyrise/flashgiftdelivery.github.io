@@ -95,69 +95,58 @@ export default function LandingPage() {
 
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="luxury-gradient text-foreground py-20 md:py-28">
+        <section className="bg-white text-foreground py-20 md:py-32">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <Image
-                  src="/logo.jpg"
-                  alt="Flash Gift Delivery"
-                  width={200}
-                  height={80}
-                  className="mb-6"
-                />
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                  Forgot? We've Got You.
-                </h1>
-                <p className="text-xl md:text-2xl mb-8 opacity-95">
-                  Premium roses delivered in <span className="font-bold underline">2 hours or less</span>.
-                  Turn disaster into hero in one order.
-                </p>
+            <div className="max-w-4xl mx-auto text-center">
+              <Image
+                src="/logo.png"
+                alt="Flash Gift Delivery"
+                width={200}
+                height={80}
+                className="mx-auto mb-12"
+              />
 
-                <div className="mb-8">
-                  <GuaranteeBadge />
-                </div>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-8">
+                Forgot? We've Got You.
+              </h1>
 
-                <div className="mb-8">
-                  <CountdownTimer />
-                </div>
+              <p className="text-2xl md:text-3xl mb-12 text-muted-foreground max-w-3xl mx-auto">
+                Premium roses delivered in <span className="font-bold text-foreground">2 hours or less</span>.
+                Turn disaster into hero in one order.
+              </p>
 
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span>2-Hour Guaranteed Delivery</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span>Premium Long-Stem Roses</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <span>Handwritten Card Included</span>
-                  </div>
-                </div>
-
-                <p className="text-sm opacity-90">
-                  Delivering to: <span className="font-semibold">{deliveryCities.join(' • ')}</span>
-                </p>
+              <div className="mb-10 inline-block">
+                <GuaranteeBadge />
               </div>
 
-              <div className="relative">
-                <Image
-                  src="/roses.jpg"
-                  alt="Premium Red Roses"
-                  width={600}
-                  height={800}
-                  className="rounded-lg shadow-2xl"
-                  priority
-                />
+              <div className="mb-12">
+                <CountdownTimer />
               </div>
+
+              <div className="flex flex-wrap justify-center gap-6 mb-10 text-sm md:text-base">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>2-Hour Guaranteed Delivery</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>Premium Long-Stem Roses</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span>Handwritten Card Included</span>
+                </div>
+              </div>
+
+              <p className="text-sm text-muted-foreground">
+                Delivering to: <span className="font-semibold text-foreground">{deliveryCities.join(' • ')}</span>
+              </p>
             </div>
           </div>
         </section>
@@ -321,7 +310,7 @@ export default function LandingPage() {
         <FAQSection />
 
         {/* Final CTA */}
-        <section className="py-16 luxury-gradient text-foreground">
+        <section className="py-16 bg-muted text-foreground">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Don't Wait Until It's Too Late
