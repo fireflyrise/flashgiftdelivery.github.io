@@ -197,8 +197,8 @@ export default function LandingPage() {
               </p>
 
               {/* Scroll indicator */}
-              <div className="mt-12 flex justify-center animate-pulse">
-                <i className="fas fa-chevron-down text-6xl text-primary opacity-70"></i>
+              <div className="mt-12 flex justify-center">
+                <i className="fas fa-chevron-down text-6xl text-primary opacity-70 animate-float"></i>
               </div>
             </div>
           </div>
