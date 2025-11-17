@@ -422,7 +422,7 @@ export default function CheckoutPage() {
                 <CardContent>
                   <form onSubmit={handleStep2Submit} className="space-y-6">
                     <div>
-                      <Label htmlFor="senderName">Your Name *</Label>
+                      <Label htmlFor="senderName">Your Name (as it appears on your credit card) *</Label>
                       <Input
                         id="senderName"
                         value={formData.senderName}
