@@ -13,19 +13,32 @@ export async function POST(request: NextRequest) {
     const pabblyWebhookUrl = process.env.PABBLY_NEW_MESSAGE_WEBHOOK_URL;
 
     if (pabblyWebhookUrl) {
-      await fetch(pabblyWebhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          orderNumber: orderNumber || 'N/A',
-          message,
-          submittedAt: new Date().toISOString(),
-        }),
-      });
+      try {
+        const response = await fetch(pabblyWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            orderNumber: orderNumber || 'N/A',
+            message,
+            submittedAt: new Date().toISOString(),
+          }),
+        });
+
+        if (!response.ok) {
+          console.error('Pabbly webhook failed:', response.status, await response.text());
+        } else {
+          console.log('Pabbly webhook sent successfully');
+        }
+      } catch (webhookError) {
+        console.error('Failed to send Pabbly webhook:', webhookError);
+        // Don't fail the whole request if webhook fails
+      }
+    } else {
+      console.warn('PABBLY_NEW_MESSAGE_WEBHOOK_URL not configured');
     }
 
     return NextResponse.json({ success: true });
