@@ -71,15 +71,32 @@ export default function LandingPage() {
 
   if (storeClosed) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>Store Temporarily Closed</CardTitle>
-            <CardDescription>
-              We're taking a short break. Please check back soon!
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <Image
+            src="/logo.png"
+            alt="Flash Gift Delivery"
+            width={200}
+            height={80}
+            className="mx-auto mb-8"
+          />
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Store Temporarily Closed</CardTitle>
+              <CardDescription className="text-base">
+                We're taking a short break. Please check back soon!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                For urgent inquiries, please call us at <a href={`tel:${storePhone.replace(/\D/g, '')}`} className="text-primary hover:underline font-semibold">{storePhone}</a>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Normal hours: Monday - Sunday, 8:00 AM - 8:00 PM
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
