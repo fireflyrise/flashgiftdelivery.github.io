@@ -168,28 +168,6 @@ Created API routes using service role key to bypass RLS issues:
 
 ---
 
-### Environment Variables Configured
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://ywhobrsnggdvobxuiygd.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-# Stripe (Test Mode)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51SEJ6r...
-STRIPE_SECRET_KEY=sk_test_51SEJ6r...
-STRIPE_WEBHOOK_SECRET=whsec_c0a68e91744a6668564dc52f...
-
-# Google Places API (Placeholder - needs real key)
-NEXT_PUBLIC_GOOGLE_PLACES_API_KEY=your_google_places_api_key
-
-# App Configuration
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
----
-
 ### Important Files Modified This Session
 
 1. **lib/constants.ts**
