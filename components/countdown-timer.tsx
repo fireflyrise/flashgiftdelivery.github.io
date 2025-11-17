@@ -67,7 +67,7 @@ export function CountdownTimer() {
       <div className="bg-primary text-primary-foreground px-6 py-4 rounded-lg text-center">
         <p className="text-sm font-medium mb-1">Order within</p>
         <p className="text-3xl font-bold tabular-nums">Loading...</p>
-        <p className="text-sm mt-1">for delivery today</p>
+        <p className="text-sm mt-1">for 2-hour delivery today</p>
       </div>
     );
   }
@@ -76,15 +76,22 @@ export function CountdownTimer() {
   if (isAfterHours) {
     const now = new Date();
     const currentHour = now.getHours();
-    // 6 PM to midnight: next-day delivery
-    // Midnight to noon: today's delivery
-    const deliveryDay = currentHour >= 18 ? "next-day delivery" : "today's delivery";
+
+    // Calculate earliest delivery time
+    let earliestDelivery = "";
+    if (currentHour >= 18) {
+      // 6 PM to midnight: Show tomorrow's first slot (8 AM + 2 hours = 10 AM)
+      earliestDelivery = "10:00 AM tomorrow";
+    } else {
+      // Midnight to noon: Show today's first slot (8 AM + 2 hours = 10 AM)
+      earliestDelivery = "10:00 AM today";
+    }
 
     return (
       <div className="bg-destructive text-destructive-foreground px-6 py-4 rounded-lg text-center">
         <p className="text-sm font-medium mb-1">⚠️ Limited Availability</p>
         <p className="text-3xl font-bold mb-1">Only {scarcity.slotsRemaining} Slots Left</p>
-        <p className="text-sm">for {deliveryDay} • {scarcity.percentFilled}% reserved</p>
+        <p className="text-sm">2-hour delivery as early as {earliestDelivery} • {scarcity.percentFilled}% reserved</p>
       </div>
     );
   }
@@ -93,7 +100,7 @@ export function CountdownTimer() {
     <div className="bg-primary text-primary-foreground px-6 py-4 rounded-lg text-center">
       <p className="text-sm font-medium mb-1">Order within</p>
       <p className="text-3xl font-bold tabular-nums">{formatCountdown(timeLeft)}</p>
-      <p className="text-sm mt-1">for delivery today</p>
+      <p className="text-sm mt-1">for 2-hour delivery today</p>
     </div>
   );
 }
