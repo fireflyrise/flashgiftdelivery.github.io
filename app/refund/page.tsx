@@ -24,7 +24,7 @@ export default function RefundPage() {
             <h2>1. Delivery Guarantee</h2>
             <h3>1.1 2-Hour Delivery Promise</h3>
             <p>
-              We guarantee delivery within 2 hours of order placement during our operating hours (8 AM - 7 PM). If we fail to deliver within this timeframe, you are eligible for a full refund - no questions asked.
+              We guarantee delivery within 2 hours of order placement during our operating hours (8 AM - 8 PM). If we fail to deliver within this timeframe, you are eligible for a full refund - no questions asked.
             </p>
 
             <h3>1.2 How to Claim Your Refund</h3>

@@ -34,7 +34,7 @@ export default function TermsPage() {
 
             <h3>3.2 Delivery Guarantee</h3>
             <p>
-              We guarantee delivery within 2 hours of order placement during our operating hours (8 AM - 7 PM). If we fail to deliver within this timeframe, you may be eligible for a full refund under our Money-Back Guarantee.
+              We guarantee delivery within 2 hours of order placement during our operating hours (8 AM - 8 PM). If we fail to deliver within this timeframe, you may be eligible for a full refund under our Money-Back Guarantee.
             </p>
 
             <h3>3.3 Delivery Restrictions</h3>
