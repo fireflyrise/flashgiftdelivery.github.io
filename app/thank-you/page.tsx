@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Testimonials } from '@/components/testimonials';
 import { Order } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils-pricing';
+import { formatDeliveryTimeSlot } from '@/lib/utils-time';
 
 function ThankYouPageContent() {
   const searchParams = useSearchParams();
@@ -175,7 +176,7 @@ function ThankYouPageContent() {
                 <div><span className="font-semibold">Address:</span> {order.delivery_address}, {order.delivery_city}, {order.delivery_state} {order.delivery_zipcode}</div>
                 {order.gate_code && <div><span className="font-semibold">Gate Code:</span> {order.gate_code}</div>}
                 {order.delivery_instructions && <div><span className="font-semibold">Instructions:</span> {order.delivery_instructions}</div>}
-                <div><span className="font-semibold">Delivery Time:</span> {order.delivery_time_slot}</div>
+                <div><span className="font-semibold">Delivery Time:</span> {formatDeliveryTimeSlot(order.delivery_time_slot)}</div>
               </div>
             </div>
 

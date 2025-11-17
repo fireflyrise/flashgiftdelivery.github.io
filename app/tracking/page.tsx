@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Order } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils-pricing';
+import { formatDeliveryTimeSlot } from '@/lib/utils-time';
 
 const STATUS_STEPS = [
   { key: 'received', label: 'Received', icon: '📝' },
@@ -220,7 +221,7 @@ function TrackingPageContent() {
                   <div className="text-sm space-y-1">
                     <div><span className="font-semibold">Recipient:</span> {order.recipient_name}</div>
                     <div><span className="font-semibold">Address:</span> {order.delivery_address}, {order.delivery_city}, {order.delivery_state} {order.delivery_zipcode}</div>
-                    <div><span className="font-semibold">Scheduled Time:</span> {order.delivery_time_slot}</div>
+                    <div><span className="font-semibold">Scheduled Time:</span> {formatDeliveryTimeSlot(order.delivery_time_slot)}</div>
                   </div>
                 </div>
 
