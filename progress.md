@@ -974,3 +974,151 @@ Before deploying, verify:
 ---
 
 **Last Updated:** 2025-11-22 (Evening) - ✅ Scheduling System Code Fully Recreated
+
+---
+
+## Session: 2025-11-22 (Continued) - Post-Recreation Improvements
+
+### Issues Fixed & Features Enhanced
+
+#### 27. ✅ Zipcode Validation Fix
+**Issue:** Zipcode 85260 was returning "Sorry, we don't deliver to this area yet" even though `is_active` was set to `true` in database.
+
+**Root Cause:** API route was creating a new Supabase client instead of using the centralized `supabaseAdmin` helper.
+
+**Solution:**
+- Changed `app/api/validate-zipcode/route.ts` to use `supabaseAdmin` from `@/lib/supabase-admin`
+- Added debug logging to track zipcode validation requests
+- Added console logging for all zipcodes in database and search results
+
+**Status:** ✅ FIXED
+
+---
+
+#### 28. ✅ Missing Dialog Component
+**Issue:** Admin schedule page threw error: "Module not found: Can't resolve '@/components/ui/dialog'"
+
+**Root Cause:** Dialog component wasn't installed from shadcn/ui.
+
+**Solution:**
+- Ran `npx shadcn@latest add dialog`
+- Installed `@radix-ui/react-dialog` and created `components/ui/dialog.tsx`
+- Dialog rendered but content wasn't visible (portal issue) - resolved with dev server restart
+
+**Status:** ✅ FIXED
+
+---
+
+#### 29. ✅ Default Time Slot Values
+**Enhancement:** Changed default values in "Block Time Slot" dialog
+
+**Changes:**
+- Start time: `09:00` → `08:00` (8 AM - store opening time)
+- End time: `17:00` → `''` (empty - forces user to select or use auto-increment)
+- Updated both initial state and form reset after successful block creation
+
+**Files Modified:**
+- `app/admin/schedule/page.tsx` - Lines 41-45, 97
+
+**Status:** ✅ IMPLEMENTED
+
+---
+
+#### 30. ✅ Auto-Increment End Time
+**Enhancement:** Automatically set end time to 1 hour after start time
+
+**Implementation:**
+- When user selects start time, end time auto-populates with start time + 1 hour
+- User can still manually override the end time if needed
+- Example: Select 2:00 PM → End time auto-fills to 3:00 PM
+
+**Algorithm:**
+```javascript
+const [hours, minutes] = startTime.split(':');
+const endHour = (parseInt(hours) + 1).toString().padStart(2, '0');
+const endTime = `${endHour}:${minutes}`;
+```
+
+**Files Modified:**
+- `app/admin/schedule/page.tsx` - Lines 275-286
+
+**Status:** ✅ IMPLEMENTED
+
+---
+
+#### 31. ✅ Show All Time Slots (Including Blocked)
+**Enhancement:** Display all time slots in checkout with blocked ones greyed out instead of hiding them
+
+**Previous Behavior:**
+- Blocked time slots were completely filtered out from the dropdown
+- Customer couldn't see why certain times weren't available
+
+**New Behavior:**
+- ALL time slots are shown (8 AM - 8 PM in 1-hour intervals)
+- Blocked slots are:
+  - Greyed out (50% opacity)
+  - Labeled with "(Unavailable)"
+  - Disabled (cannot be selected)
+  - Show "not-allowed" cursor on hover
+
+**Implementation:**
+
+**1. Updated TimeSlot type** (`lib/utils-time.ts`):
+```typescript
+export type TimeSlot = {
+  value: string;
+  label: string;
+  datetime: Date;
+  blocked?: boolean;        // NEW
+  blockReason?: string;     // NEW
+};
+```
+
+**2. Modified `getAvailableTimeSlots()` function** (`lib/utils-time.ts`):
+- Still checks if slot is blocked using `isTimeSlotBlocked()`
+- Instead of skipping blocked slots, adds them with `blocked: true` flag
+- Includes `blockReason` from database (e.g., "Doctor's appointment")
+
+**3. Updated checkout UI** (`app/checkout/page.tsx`):
+```tsx
+<SelectItem
+  key={slot.value}
+  value={slot.value}
+  disabled={slot.blocked}
+  className={slot.blocked ? 'opacity-50 cursor-not-allowed' : ''}
+>
+  {slot.label} {slot.blocked && '(Unavailable)'}
+</SelectItem>
+```
+
+**Files Modified:**
+- `lib/utils-time.ts` - Added `blocked` and `blockReason` properties, modified all three slot generation loops
+- `app/checkout/page.tsx` - Updated SelectItem rendering for both today and tomorrow slots
+
+**Benefits:**
+- Better transparency for customers
+- Shows which specific hours are blocked
+- Clearer indication of availability
+- Prevents confusion about missing time slots
+
+**Status:** ✅ FULLY WORKING
+
+---
+
+### Session Summary
+
+**Total Improvements:** 5 fixes/enhancements
+- 2 bug fixes (zipcode validation, missing dialog)
+- 3 UX enhancements (default times, auto-increment, show all slots)
+
+**Files Modified:** 4 files
+- `app/api/validate-zipcode/route.ts` - Better error handling and debugging
+- `app/admin/schedule/page.tsx` - Default times and auto-increment
+- `lib/utils-time.ts` - Added blocked/blockReason to TimeSlot type
+- `app/checkout/page.tsx` - Display all slots with disabled state for blocked ones
+
+**Commit:** "Add scheduling system with time slot blocking and calendar view"
+
+---
+
+**Last Updated:** 2025-11-22 (Late Evening) - ✅ All Post-Recreation Improvements Complete
