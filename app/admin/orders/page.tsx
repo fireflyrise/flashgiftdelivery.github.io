@@ -83,6 +83,9 @@ function AdminOrdersContent() {
             <Link href="/admin/orders" className="font-semibold text-primary">
               Orders
             </Link>
+            <Link href="/admin/schedule" className="text-muted-foreground hover:text-foreground">
+              Schedule
+            </Link>
             <Link href="/admin/settings" className="text-muted-foreground hover:text-foreground">
               Settings
             </Link>

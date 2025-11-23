@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { GuaranteeBadge } from '@/components/guarantee-badge';
 import { AddressAutocomplete } from '@/components/address-autocomplete';
 import { PACKAGES, CARD_OCCASIONS, CHOCOLATES_PRICE } from '@/lib/constants';
-import { getAvailableTimeSlots, formatDeliveryTimeSlot } from '@/lib/utils-time';
+import { getAvailableTimeSlots, formatDeliveryTimeSlot, BlockedTimeSlot } from '@/lib/utils-time';
 import { calculateOrderTotal, formatPrice } from '@/lib/utils-pricing';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -150,10 +150,27 @@ export default function CheckoutPage() {
       deliveryState: state || '',
     }));
 
-    // Load time slots
-    const slots = getAvailableTimeSlots();
-    setTimeSlots(slots);
+    // Load time slots with blocked slots
+    fetchTimeSlotsWithBlocks();
   }, [router]);
+
+  const fetchTimeSlotsWithBlocks = async () => {
+    try {
+      // Fetch blocked time slots from the API
+      const response = await fetch('/api/blocked-slots');
+      const data = await response.json();
+      const blockedSlots: BlockedTimeSlot[] = data.blockedSlots || [];
+
+      // Generate available time slots, excluding blocked ones
+      const slots = getAvailableTimeSlots(blockedSlots);
+      setTimeSlots(slots);
+    } catch (error) {
+      console.error('Failed to fetch blocked slots:', error);
+      // Fallback to generating slots without blocking
+      const slots = getAvailableTimeSlots([]);
+      setTimeSlots(slots);
+    }
+  };
 
   const selectedPackage = PACKAGES.find(p => p.id === packageType);
   const pricing = selectedPackage ? calculateOrderTotal(selectedPackage.id as any, formData.hasChocolates) : null;
@@ -391,13 +408,27 @@ export default function CheckoutPage() {
                               <>
                                 <SelectItem value="today-header" disabled>Today</SelectItem>
                                 {timeSlots.todaySlots.map(slot => (
-                                  <SelectItem key={slot.value} value={slot.value}>{slot.label}</SelectItem>
+                                  <SelectItem
+                                    key={slot.value}
+                                    value={slot.value}
+                                    disabled={slot.blocked}
+                                    className={slot.blocked ? 'opacity-50 cursor-not-allowed' : ''}
+                                  >
+                                    {slot.label} {slot.blocked && '(Unavailable)'}
+                                  </SelectItem>
                                 ))}
                               </>
                             )}
                             <SelectItem value="tomorrow-header" disabled>Tomorrow</SelectItem>
                             {timeSlots.tomorrowSlots.map(slot => (
-                              <SelectItem key={slot.value} value={slot.value}>{slot.label}</SelectItem>
+                              <SelectItem
+                                key={slot.value}
+                                value={slot.value}
+                                disabled={slot.blocked}
+                                className={slot.blocked ? 'opacity-50 cursor-not-allowed' : ''}
+                              >
+                                {slot.label} {slot.blocked && '(Unavailable)'}
+                              </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>

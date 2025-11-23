@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -10,13 +10,16 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Use service role key to bypass RLS
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    console.log('[Zipcode Validation] Checking zipcode:', zipcode);
 
-    const { data, error } = await supabase
+    // First, let's check all zipcodes to see what's in the database
+    const { data: allZips, error: allZipsError } = await supabaseAdmin
+      .from('delivery_zipcodes')
+      .select('zipcode, is_active');
+
+    console.log('[Zipcode Validation] All zipcodes in DB:', allZips);
+
+    const { data, error } = await supabaseAdmin
       .from('delivery_zipcodes')
       .select('*')
       .eq('zipcode', zipcode)
@@ -24,22 +27,25 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error('[Zipcode Validation] Supabase error:', error);
       return NextResponse.json({
         valid: false,
         error: 'Not in service area',
         debug: {
           message: error.message,
           code: error.code,
-          details: error.details
+          details: error.details,
+          searchedZipcode: zipcode
         }
       });
     }
 
     if (!data) {
+      console.error('[Zipcode Validation] No data returned for zipcode:', zipcode);
       return NextResponse.json({ valid: false, error: 'Not in service area' });
     }
 
+    console.log('[Zipcode Validation] Valid zipcode found:', data);
     return NextResponse.json({
       valid: true,
       zipcode: data.zipcode,
@@ -47,6 +53,7 @@ export async function GET(request: NextRequest) {
       state: data.state,
     });
   } catch (error) {
+    console.error('[Zipcode Validation] Unexpected error:', error);
     return NextResponse.json({ valid: false, error: 'Validation failed' });
   }
 }

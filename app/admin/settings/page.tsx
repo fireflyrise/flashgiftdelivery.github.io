@@ -111,6 +111,7 @@ export default function AdminSettingsPage() {
           <nav className="flex gap-6 py-3">
             <Link href="/admin/dashboard" className="text-muted-foreground hover:text-foreground">Dashboard</Link>
             <Link href="/admin/orders" className="text-muted-foreground hover:text-foreground">Orders</Link>
+            <Link href="/admin/schedule" className="text-muted-foreground hover:text-foreground">Schedule</Link>
             <Link href="/admin/settings" className="font-semibold text-primary">Settings</Link>
           </nav>
         </div>

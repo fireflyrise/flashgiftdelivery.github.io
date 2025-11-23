@@ -93,6 +93,9 @@ export default function AdminDashboard() {
             <Link href="/admin/orders" className="text-muted-foreground hover:text-foreground">
               Orders
             </Link>
+            <Link href="/admin/schedule" className="text-muted-foreground hover:text-foreground">
+              Schedule
+            </Link>
             <Link href="/admin/settings" className="text-muted-foreground hover:text-foreground">
               Settings
             </Link>

@@ -5,14 +5,44 @@ export type TimeSlot = {
   value: string;
   label: string;
   datetime: Date;
+  blocked?: boolean;
+  blockReason?: string;
 };
+
+export type BlockedTimeSlot = {
+  id: string;
+  block_date: string;
+  start_time: string;
+  end_time: string;
+  reason: string | null;
+};
+
+/**
+ * Check if a time slot is blocked
+ */
+function isTimeSlotBlocked(slotDatetime: Date, blockedSlots: BlockedTimeSlot[]): boolean {
+  const slotDate = format(slotDatetime, 'yyyy-MM-dd');
+  const slotTime = format(slotDatetime, 'HH:mm:ss');
+
+  for (const block of blockedSlots) {
+    // Check if the date matches
+    if (block.block_date !== slotDate) continue;
+
+    // Check if the slot time falls within the blocked range
+    if (slotTime >= block.start_time && slotTime < block.end_time) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /**
  * Generates available delivery time slots based on current time
  * Earliest: 2 hours from now, rounded to nearest 30 minutes
  * Latest: Closing time - 2 hours
  */
-export function getAvailableTimeSlots(): {
+export function getAvailableTimeSlots(blockedSlots: BlockedTimeSlot[] = []): {
   todaySlots: TimeSlot[];
   tomorrowSlots: TimeSlot[];
 } {
@@ -32,10 +62,19 @@ export function getAvailableTimeSlots(): {
   if (currentHour < DELIVERY_HOURS.open) {
     let currentSlot = openingTime;
     while (isBefore(currentSlot, lastDeliveryToday) || currentSlot.getTime() === lastDeliveryToday.getTime()) {
+      const blocked = isTimeSlotBlocked(currentSlot, blockedSlots);
+      const blockInfo = blocked ? blockedSlots.find(block => {
+        const slotDate = format(currentSlot, 'yyyy-MM-dd');
+        const slotTime = format(currentSlot, 'HH:mm:ss');
+        return block.block_date === slotDate && slotTime >= block.start_time && slotTime < block.end_time;
+      }) : null;
+
       todaySlots.push({
         value: format(currentSlot, 'yyyy-MM-dd HH:mm'),
         label: format(currentSlot, 'h:mm a'),
         datetime: currentSlot,
+        blocked,
+        blockReason: blockInfo?.reason || undefined,
       });
       currentSlot = addMinutes(currentSlot, 60);
     }
@@ -48,10 +87,19 @@ export function getAvailableTimeSlots(): {
     // Generate today's slots
     let currentSlot = earliestSlot;
     while (isBefore(currentSlot, lastDeliveryToday) || currentSlot.getTime() === lastDeliveryToday.getTime()) {
+      const blocked = isTimeSlotBlocked(currentSlot, blockedSlots);
+      const blockInfo = blocked ? blockedSlots.find(block => {
+        const slotDate = format(currentSlot, 'yyyy-MM-dd');
+        const slotTime = format(currentSlot, 'HH:mm:ss');
+        return block.block_date === slotDate && slotTime >= block.start_time && slotTime < block.end_time;
+      }) : null;
+
       todaySlots.push({
         value: format(currentSlot, 'yyyy-MM-dd HH:mm'),
         label: format(currentSlot, 'h:mm a'),
         datetime: currentSlot,
+        blocked,
+        blockReason: blockInfo?.reason || undefined,
       });
       currentSlot = addMinutes(currentSlot, 60);
     }
@@ -65,10 +113,19 @@ export function getAvailableTimeSlots(): {
 
   let currentSlot = tomorrowOpen;
   while (isBefore(currentSlot, tomorrowLastDelivery) || currentSlot.getTime() === tomorrowLastDelivery.getTime()) {
+    const blocked = isTimeSlotBlocked(currentSlot, blockedSlots);
+    const blockInfo = blocked ? blockedSlots.find(block => {
+      const slotDate = format(currentSlot, 'yyyy-MM-dd');
+      const slotTime = format(currentSlot, 'HH:mm:ss');
+      return block.block_date === slotDate && slotTime >= block.start_time && slotTime < block.end_time;
+    }) : null;
+
     tomorrowSlots.push({
       value: format(currentSlot, 'yyyy-MM-dd HH:mm'),
       label: format(currentSlot, 'h:mm a'),
       datetime: currentSlot,
+      blocked,
+      blockReason: blockInfo?.reason || undefined,
     });
     currentSlot = addMinutes(currentSlot, 60);
   }
