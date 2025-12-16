@@ -3,7 +3,7 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { generateAndUploadReceipt } from '@/lib/generate-receipt-pdf';
 import { formatDeliveryTimeSlot } from '@/lib/utils-time';
-import { format, addMinutes, subMinutes } from 'date-fns';
+import { format, addMinutes } from 'date-fns';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
@@ -45,9 +45,9 @@ export async function POST(request: NextRequest) {
         console.error('Failed to update order:', updateError);
       }
 
-      // Block the full hour around the delivery time slot
-      // When someone books 10:00 AM, block 9:30 AM, 10:00 AM, and 10:30 AM
-      // So available slots become: ...9:00 AM, 11:00 AM, 11:30 AM...
+      // Block the booked time slot and 30 min after
+      // When someone books 10:00 AM, block 10:00 AM and 10:30 AM
+      // So available slots become: ...9:30 AM, 11:00 AM, 11:30 AM...
       try {
         const { data: orderForBlocking } = await supabaseAdmin
           .from('orders')
@@ -62,12 +62,12 @@ export async function POST(request: NextRequest) {
           const [hour, minute] = timePart.split(':').map(Number);
           const slotTime = new Date(year, month - 1, day, hour, minute);
 
-          // Calculate block start (30 min before) and end (1 hour after the start, exclusive)
-          // This blocks: 9:30, 10:00, 10:30 when 10:00 is booked
-          const blockStart = subMinutes(slotTime, 30);
-          const blockEnd = addMinutes(slotTime, 60); // End is exclusive, so 11:00 means 10:30 is last blocked
+          // Block from the booked slot to 1 hour later (exclusive)
+          // This blocks: 10:00, 10:30 when 10:00 is booked (11:00 is available)
+          const blockStart = slotTime;
+          const blockEnd = addMinutes(slotTime, 60); // End is exclusive
 
-          // Insert blocked time slot for the full hour
+          // Insert blocked time slot
           await supabaseAdmin
             .from('blocked_time_slots')
             .insert({
