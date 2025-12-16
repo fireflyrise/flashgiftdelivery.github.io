@@ -3,7 +3,7 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { generateAndUploadReceipt } from '@/lib/generate-receipt-pdf';
 import { formatDeliveryTimeSlot } from '@/lib/utils-time';
-import { format, addMinutes } from 'date-fns';
+import { format, addMinutes, subMinutes } from 'date-fns';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
@@ -45,9 +45,9 @@ export async function POST(request: NextRequest) {
         console.error('Failed to update order:', updateError);
       }
 
-      // Block the booked time slot and 30 min after
-      // When someone books 10:00 AM, block 10:00 AM and 10:30 AM
-      // So available slots become: ...9:30 AM, 11:00 AM, 11:30 AM...
+      // Block the booked time slot, 30 min before, and 30 min after
+      // When someone books 10:00 AM, block 9:30 AM, 10:00 AM, and 10:30 AM
+      // So available slots become: ...9:00 AM, 11:00 AM, 11:30 AM...
       try {
         const { data: orderForBlocking } = await supabaseAdmin
           .from('orders')
@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
           const [hour, minute] = timePart.split(':').map(Number);
           const slotTime = new Date(year, month - 1, day, hour, minute);
 
-          // Block from the booked slot to 1 hour later (exclusive)
-          // This blocks: 10:00, 10:30 when 10:00 is booked (11:00 is available)
-          const blockStart = slotTime;
+          // Block from 30 min before to 1 hour after block start (exclusive end)
+          // This blocks: 9:30, 10:00, 10:30 when 10:00 is booked (9:00 and 11:00 are available)
+          const blockStart = subMinutes(slotTime, 30);
           const blockEnd = addMinutes(slotTime, 60); // End is exclusive
 
           // Insert blocked time slot
