@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { generateAndUploadReceipt } from '@/lib/generate-receipt-pdf';
 import { formatDeliveryTimeSlot } from '@/lib/utils-time';
+import { format, addMinutes, subMinutes } from 'date-fns';
 import Stripe from 'stripe';
 
 export async function POST(request: NextRequest) {
@@ -42,6 +43,43 @@ export async function POST(request: NextRequest) {
 
       if (updateError) {
         console.error('Failed to update order:', updateError);
+      }
+
+      // Block the full hour around the delivery time slot
+      // When someone books 10:00 AM, block 9:30 AM, 10:00 AM, and 10:30 AM
+      // So available slots become: ...9:00 AM, 11:00 AM, 11:30 AM...
+      try {
+        const { data: orderForBlocking } = await supabaseAdmin
+          .from('orders')
+          .select('delivery_time_slot, order_number')
+          .eq('stripe_payment_intent_id', paymentIntent.id)
+          .single();
+
+        if (orderForBlocking?.delivery_time_slot) {
+          // Parse the delivery time slot (format: "yyyy-MM-dd HH:mm")
+          const [datePart, timePart] = orderForBlocking.delivery_time_slot.split(' ');
+          const [year, month, day] = datePart.split('-').map(Number);
+          const [hour, minute] = timePart.split(':').map(Number);
+          const slotTime = new Date(year, month - 1, day, hour, minute);
+
+          // Calculate block start (30 min before) and end (1 hour after the start, exclusive)
+          // This blocks: 9:30, 10:00, 10:30 when 10:00 is booked
+          const blockStart = subMinutes(slotTime, 30);
+          const blockEnd = addMinutes(slotTime, 60); // End is exclusive, so 11:00 means 10:30 is last blocked
+
+          // Insert blocked time slot for the full hour
+          await supabaseAdmin
+            .from('blocked_time_slots')
+            .insert({
+              block_date: datePart,
+              start_time: format(blockStart, 'HH:mm:ss'),
+              end_time: format(blockEnd, 'HH:mm:ss'),
+              reason: `Order #${orderForBlocking.order_number}`,
+            });
+        }
+      } catch (blockError) {
+        console.error('Failed to block time slot:', blockError);
+        // Don't fail the webhook if blocking fails
       }
 
       // Send webhook to Pabbly (if configured)

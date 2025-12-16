@@ -76,13 +76,19 @@ export function getAvailableTimeSlots(blockedSlots: BlockedTimeSlot[] = []): {
         blocked,
         blockReason: blockInfo?.reason || undefined,
       });
-      currentSlot = addMinutes(currentSlot, 60);
+      currentSlot = addMinutes(currentSlot, 30);
     }
   }
   // If during business hours, generate remaining today's slots
   else if (currentHour >= DELIVERY_HOURS.open && currentHour < (DELIVERY_HOURS.close - DELIVERY_HOURS.deliveryBuffer)) {
-    // Round up to next hour
-    const earliestSlot = setMinutes(addHours(twoHoursFromNow, 1), 0);
+    // Round up to next 30-minute slot, at least 2 hours from now
+    const minutesPastHalfHour = twoHoursFromNow.getMinutes() % 30;
+    const roundedMinutes = minutesPastHalfHour === 0 ? twoHoursFromNow.getMinutes() : twoHoursFromNow.getMinutes() + (30 - minutesPastHalfHour);
+    let earliestSlot = setMinutes(twoHoursFromNow, roundedMinutes);
+    // If rounding pushed us to next hour, handle that
+    if (roundedMinutes >= 60) {
+      earliestSlot = setMinutes(addHours(twoHoursFromNow, 1), roundedMinutes - 60);
+    }
 
     // Generate today's slots
     let currentSlot = earliestSlot;
@@ -101,7 +107,7 @@ export function getAvailableTimeSlots(blockedSlots: BlockedTimeSlot[] = []): {
         blocked,
         blockReason: blockInfo?.reason || undefined,
       });
-      currentSlot = addMinutes(currentSlot, 60);
+      currentSlot = addMinutes(currentSlot, 30);
     }
   }
 
@@ -127,7 +133,7 @@ export function getAvailableTimeSlots(blockedSlots: BlockedTimeSlot[] = []): {
       blocked,
       blockReason: blockInfo?.reason || undefined,
     });
-    currentSlot = addMinutes(currentSlot, 60);
+    currentSlot = addMinutes(currentSlot, 30);
   }
 
   return { todaySlots, tomorrowSlots };
@@ -217,7 +223,8 @@ export function getNextDeliveryTime(): string {
 
 /**
  * Format delivery time slot for human-readable display
- * Converts "2025-11-16 17:00" to "November 16th, 2025 at 5PM"
+ * Converts "2025-11-16 17:00" to "November 16th, 2025 at 5:00 PM"
+ * Converts "2025-11-16 17:30" to "November 16th, 2025 at 5:30 PM"
  */
 export function formatDeliveryTimeSlot(timeSlot: string): string {
   try {
@@ -243,17 +250,12 @@ export function formatDeliveryTimeSlot(timeSlot: string): string {
     // Format month
     const monthName = format(date, 'MMMM');
 
-    // Format time as "5PM" or "12PM" (no minutes if :00)
-    let timeStr = '';
-    if (hour === 0) {
-      timeStr = '12AM';
-    } else if (hour < 12) {
-      timeStr = `${hour}AM`;
-    } else if (hour === 12) {
-      timeStr = '12PM';
-    } else {
-      timeStr = `${hour - 12}PM`;
-    }
+    // Format time with minutes
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    const ampm = hour < 12 ? 'AM' : 'PM';
+    const timeStr = minute === 0
+      ? `${displayHour}:00 ${ampm}`
+      : `${displayHour}:${minute.toString().padStart(2, '0')} ${ampm}`;
 
     return `${monthName} ${dayNum}${suffix(dayNum)}, ${year} at ${timeStr}`;
   } catch (error) {
